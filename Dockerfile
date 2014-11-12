@@ -5,8 +5,8 @@ ENV UPDATED "Wed Nov 12 12:26:46 GMT 2014"
 # Build virtuoso opensource debian package from github
 RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse" >> /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get install -y build-essential debhelper autotools-dev autoconf automake unzip wget net-tools > /dev/null
-RUN apt-get install -y libtool flex bison gperf gawk m4 libssl-dev libreadline-dev openssl > /dev/null
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential debhelper autotools-dev autoconf automake unzip wget net-tools > /dev/null
+RUN DEBIAN_FRONTEND=noninteractiveDEBIAN_FRONTEND=noninteractive apt-get install -y libtool flex bison gperf gawk m4 libssl-dev libreadline-dev openssl > /dev/null
 RUN wget --no-check-certificate -q https://github.com/openlink/virtuoso-opensource/archive/stable/7.zip -O virtuoso-opensource.zip
 RUN unzip -q virtuoso-opensource.zip
 RUN cd virtuoso-opensource-develop-7/ && dpkg-buildpackage -us -uc
