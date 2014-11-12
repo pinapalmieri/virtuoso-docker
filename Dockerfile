@@ -1,13 +1,13 @@
-FROM ubuntu:12.04
-MAINTAINER Nolan Nichols <orcid.org/0000-0003-1099-3328>
-ENV UPDATED "Fri Aug  8 13:30:08 PDT 2014"
+FROM ubuntu:14.04
+MAINTAINER Stian Soiland-Reyes <orcid.org/0000-0001-9842-9718>
+ENV UPDATED "Wed Nov 12 12:26:46 GMT 2014"
 
 # Build virtuoso opensource debian package from github
 RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse" >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y build-essential debhelper autotools-dev autoconf automake unzip wget net-tools > /dev/null
 RUN apt-get install -y libtool flex bison gperf gawk m4 libssl-dev libreadline-dev openssl > /dev/null
-RUN wget --no-check-certificate -q https://github.com/openlink/virtuoso-opensource/archive/develop/7.zip -O virtuoso-opensource.zip
+RUN wget --no-check-certificate -q https://github.com/openlink/virtuoso-opensource/archive/stable/7.zip -O virtuoso-opensource.zip
 RUN unzip -q virtuoso-opensource.zip
 RUN cd virtuoso-opensource-develop-7/ && dpkg-buildpackage -us -uc
 RUN cd .. && dpkg -i virtuoso-opensource_7.1_amd64.deb
