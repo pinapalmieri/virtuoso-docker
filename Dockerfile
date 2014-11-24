@@ -38,10 +38,14 @@ RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso/db,/virtuoso, /var/lib/virtuoso
 # And /staging for loading data
 RUN mkdir /staging ; sed -i ^CDirsAllowed/ s:$:,/staging:' /var/lib/virtuoso/db/virtuoso.ini
 
+COPY start-virtuoso.sh /usr/local/bin/
+
 # Virtuoso ports
 EXPOSE 8890
 EXPOSE 1111
 # Run virtuoso in the foreground
 WORKDIR /var/lib/virtuoso/db
 VOLUME ["/virtuoso", "/staging", "/var/lib/virtuoso/db"]
-CMD ["/usr/bin/virtuoso-t", "+wait", "+foreground"]
+#CMD ["/usr/bin/virtuoso-t", "+wait", "+foreground"]
+CMD ["/usr/local/bin/start-virtuoso.sh"]
+
