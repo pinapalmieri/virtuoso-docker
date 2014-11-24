@@ -1,6 +1,6 @@
 FROM ubuntu:12.04
 MAINTAINER Stian Soiland-Reyes <orcid.org/0000-0001-9842-9718>
-ENV UPDATED "Wed Nov 21 14:30:00 GMT 2014"
+ENV UPDATED "Wed Nov 24 15:54:00 GMT 2014"
 
 # Build virtuoso opensource debian package from github
 RUN echo "deb http://archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse" >> /etc/apt/sources.list
