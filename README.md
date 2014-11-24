@@ -61,20 +61,11 @@ Note that `/scratch/ops/1.4/rdf/staging.sql` uses `/staging` as base directory, 
 
 After staging is complete, a total number of triples (including any present before staging) will be output, and virtuoso will continue running.
 
-	stain@docker:~$ docker run -p 8890:8890 -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso -d soilandreyes/virtuoso-docker
+	stain@docker:~$ docker run -p 8890:8890 -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso -it soilandreyes/virtuoso-docker
 	Virtuoso params: NumberOfBuffers 236980 ; MaxDirtyBuffers: 177735
 	Populating from /staging/staging.sql
 	Total number of triples:
 	5752
 
-
-
-### Multiple staging threads
-
-By default the staging will execute a single `rdf_loader_run();` thread - to use multiple CPU cores, add additional lines to the `staging.sql`, e.g. for a total of 3 loader threads:
-
-	rdf_loader_run() &
-	rdf_loader_run() &
-	
 
 
