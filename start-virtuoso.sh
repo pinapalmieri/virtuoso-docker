@@ -19,7 +19,9 @@ sed -i "s/^\(MaxDirtyBuffers\s*= \)[0-9]*/\1$dirtyBuffers/" /var/lib/virtuoso/db
 
 
 
-alias isql="isql-v 1111 dba dba VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout"
+function isql {
+ isql-v 1111 dba dba VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout "$@"
+}
 
 function finish {
   echo "Shutting down virtuoso"
