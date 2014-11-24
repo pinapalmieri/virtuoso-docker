@@ -36,9 +36,10 @@ RUN apt-get remove -y build-essential debhelper autotools-dev autoconf automake 
 # Enable mountable /virtuoso for data storage
 RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso/db,/virtuoso, /var/lib/virtuoso/db/virtuoso.ini 
 # And /staging for loading data
-RUN mkdir /staging ; sed -i ^CDirsAllowed/ s:$:,/staging:' /var/lib/virtuoso/db/virtuoso.ini
+RUN mkdir /staging ; sed -i '/DirsAllowed/ s:$:,/staging:' /var/lib/virtuoso/db/virtuoso.ini
 
 COPY start-virtuoso.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/start-virtuoso.sh
 
 # Virtuoso ports
 EXPOSE 8890

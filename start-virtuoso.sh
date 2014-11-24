@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 #set NumberOfBuffers and MaxDirtyBuffers parameters in Virtuoso.ini
 totalMem=$(cat /proc/meminfo | grep "MemTotal" | grep -o "[0-9]*")
 
@@ -14,15 +16,23 @@ sed -i "s/^\(MaxDirtyBuffers\s*= \)[0-9]*/\1$dirtyBuffers/" /var/lib/virtuoso/db
 
 
 
-/usr/bin/virtuoso-t "+wait" "+foreground" &
+
+alias isql="isql-v 1111 dba dba VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout"
 
 if [ -f /staging/staging.sql ] ; then
   echo "Populating from /staging/staging.sql"
-  isql-v "LOAD /staging/staging.sql"
-  isql-v "EXEC rdf_loader_run ();"
-  isql-v "EXEC checkpoint;"
+  /usr/bin/virtuoso-t "+wait"
 
+  isql 'exec=GRANT EXECUTE ON DB.DBA.SPARQL_INSERT_DICT_CONTENT TO "SPARQL";'
+  isql 'exec=GRANT EXECUTE ON DB.DBA.L_O_LOOK TO "SPARQL";'
+  isql 'exec=GRANT EXECUTE ON DB.DBA.SPARUL_RUN TO "SPARQL";'
+  isql 'exec=GRANT EXECUTE ON DB.DBA.SPARQL_DELETE_DICT_CONTENT TO "SPARQL";'
+  isql 'exec=GRANT EXECUTE ON DB.DBA.RDF_OBJ_ADD_KEYWORD_FOR_GRAPH TO "SPARQL";'
+  isql /staging/staging.sql 'EXEC=rdf_loader_run();' 'EXEC=checkpoint;' 
+  echo "Total number of triples": 
+  isql 'EXEC=SPARQL SELECT COUNT(*) WHERE { ?s ?p ?o} '
+  isql 'EXEC=shutdown'
+  sleep 5
 fi
 
-# Rejoin virtuoso
-wait
+/usr/bin/virtuoso-t "+wait" "+foreground"
