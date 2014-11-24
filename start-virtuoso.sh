@@ -29,6 +29,9 @@ if [ -f /staging/staging.sql ] ; then
   isql 'exec=GRANT EXECUTE ON DB.DBA.SPARQL_DELETE_DICT_CONTENT TO "SPARQL";'
   isql 'exec=GRANT EXECUTE ON DB.DBA.RDF_OBJ_ADD_KEYWORD_FOR_GRAPH TO "SPARQL";'
   isql /staging/staging.sql 'EXEC=rdf_loader_run();' 'EXEC=checkpoint;' 
+## TODO: one rdf_loader_run() for each core?
+# for core in $(cat /proc/cpuinfo  | grep "^processor" | awk '{ print $3} '); do echo Core $core  ; done
+## .. but how to wait for them to finish?
   echo "Total number of triples": 
   isql 'EXEC=SPARQL SELECT COUNT(*) WHERE { ?s ?p ?o} '
   isql 'EXEC=shutdown'
