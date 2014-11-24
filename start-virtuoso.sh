@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-
+# Exit on first error
 set -e
 
 #set NumberOfBuffers and MaxDirtyBuffers parameters in Virtuoso.ini
@@ -22,7 +22,8 @@ alias isql="isql-v 1111 dba dba VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS
 
 function finish {
   echo "Shutting down virtuoso"
-  isql -k 
+  isql-v 1111 dba dba -K
+  sleep 2
 }
 trap finish HUP INT QUIT KILL TERM
 
