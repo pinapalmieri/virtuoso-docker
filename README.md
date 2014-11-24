@@ -41,7 +41,7 @@ Note that only a single container can access the `/virtuoso` volume at a time, o
 
 The volume `/staging` and the file `/staging/staging.sql` can be used to load data,
 typically using 
-[ld\_dir](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtBulkRDFLoaderExampleDbpedia). 
+[ld\_dir](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtBulkRDFLoader)
 Note that the staging will execute on startup whenever `/staging/staging.sql` is present.
 
 Example:
