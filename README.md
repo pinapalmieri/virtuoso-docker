@@ -29,7 +29,7 @@ the `virtuoso.ini` through the volume `/var/lib/virtuoso/db`.
 Example of running Virtuosa to directly expose port `8890` and have the volume
 `/virtuoso` mounted from `/scratch/virtuoso` on the host:
 
-  docker run -d -p 8890:8890 -v /scratch/virtuoso/:/virtuoso soilandreyes/virtuoso-docker
+    docker run -d -p 8890:8890 -v /scratch/virtuoso/:/virtuoso soilandreyes/virtuoso-docker
 
 Note that only a single container can access the `/virtuoso` volume at a time, otherwise you'll get:
 
