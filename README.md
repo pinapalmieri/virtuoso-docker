@@ -46,7 +46,7 @@ Note that the staging will execute on startup whenever `/staging/staging.sql` is
 
 Example:
 
-    docker run -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso soilandreyes/virtuoso-docker
+    docker run -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso -d soilandreyes/virtuoso-docker
 
 Note that `/scratch/ops/1.4/rdf/staging.sql` uses `/staging` as base directory, example:
 
@@ -61,7 +61,7 @@ Note that `/scratch/ops/1.4/rdf/staging.sql` uses `/staging` as base directory, 
 
 After staging is complete, a total number of triples (including any present before staging) will be output, and virtuoso will continue running.
 
-	stain@docker:~$ docker run -p 8890:8890 -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso -it b2054848d569
+	stain@docker:~$ docker run -p 8890:8890 -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso -d soilandreyes/virtuoso-docker
 	Virtuoso params: NumberOfBuffers 236980 ; MaxDirtyBuffers: 177735
 	Populating from /staging/staging.sql
 	Total number of triples:
