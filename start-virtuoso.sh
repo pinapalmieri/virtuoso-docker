@@ -2,6 +2,7 @@
 
 # Exit on first error
 set -e
+cd /var/lib/virtuoso/db
 
 #set NumberOfBuffers and MaxDirtyBuffers parameters in Virtuoso.ini
 totalMem=$(cat /proc/meminfo | grep "MemTotal" | grep -o "[0-9]*")
