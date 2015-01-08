@@ -32,7 +32,7 @@ trap finish HUP INT QUIT KILL TERM
 
 
 if [ -f /staging/staging.sql ] ; then
-  echo "Starting Virtuosa"
+  echo "Starting Virtuoso"
   /usr/bin/virtuoso-t "+wait"
   echo "Configuring SPARQL"
   isql 'exec=GRANT EXECUTE ON DB.DBA.SPARQL_INSERT_DICT_CONTENT TO "SPARQL";'
@@ -52,11 +52,11 @@ if [ -f /staging/staging.sql ] ; then
   isql 'EXEC=checkpoint;' 
   echo -n "Total number of triples: " 
   isql 'EXEC=SPARQL SELECT COUNT(*) WHERE { ?s ?p ?o} '
-  echo "Keep running Virtuosa"
+  echo "Keep running Virtuoso"
   . /virtuoso/virtuoso.lck
   while [ -e /proc/$VIRT_PID ] ; do sleep 1.0 ; done
 else
-  echo "Starting Virtuosa"
+  echo "Starting Virtuoso"
   /usr/bin/virtuoso-t "+wait" "+foreground"
 fi 
 
