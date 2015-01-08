@@ -14,10 +14,13 @@ RUN  apt-get update && \
     https://github.com/openlink/virtuoso-opensource/archive/develop/7.zip \
        -O /tmp/virtuoso-opensource.zip && \
     unzip -q /tmp/virtuoso-opensource.zip && \
-   cd /tmp/virtuoso-*/ && dpkg-buildpackage -us -uc && \
-   dpkg -i /tmp/virtuoso-*.deb && \
-   rm -rf /tmp/* &&\
-   apt-get remove -y build-essential debhelper autotools-dev autoconf automake unzip net-tools
+    cd /tmp/virtuoso-*/ && dpkg-buildpackage -us -uc && \
+    dpkg -i /tmp/virtuoso-*.deb && \
+    rm -rf /tmp/* &&\
+    DEBIAN_FRONTEND=noninteractive apt-get remove -y --purge build-essential debhelper autotools-dev \ 
+        flex bison autoconf automake wget unzip net-tools gcc && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
+
 
 # Enable mountable /virtuoso for data storage
 RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso/db,/virtuoso, /var/lib/virtuoso/db/virtuoso.ini 
