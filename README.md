@@ -1,6 +1,9 @@
 # Virtuoso
 
-Virtuoso 7 Open Source Edition on Ubuntu 12.04
+Virtuoso 7 (devel) Open Source Edition on Ubuntu 14.04
+
+Note that this is based on the current `develop/7` branch of Virtuoso, as 
+`v7.1.0` turned out to be unstable for data loading.
 
 ## Docker image
 
@@ -27,10 +30,10 @@ Docker image maintained by [Stian Soiland-Reyes](http://orcid.org/0000-0001-9842
 
 This docker image exposes ports `8890` (SPARQL/WebDAV) and `1111` (isql).
 
-Virtuosa data is stored in the volume `/virtuoso`. If needed, you can modify
+Virtuoso data is stored in the volume `/virtuoso`. If needed, you can modify
 the `virtuoso.ini` through the volume `/var/lib/virtuoso/db`.
 
-Example of running Virtuosa to directly expose port `8890` and have the volume
+Example of running Virtuoso to directly expose port `8890` and have the volume
 `/virtuoso` mounted from `/scratch/virtuoso` on the host:
 
     docker run -d -p 8890:8890 -v /scratch/virtuoso/:/virtuoso stain/virtuoso
@@ -50,7 +53,9 @@ Note that the staging will execute on startup whenever `/staging/staging.sql` is
 
 Example:
 
-    docker run -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso -d stain/virtuoso
+    docker run -v /scratch/ops/1.4/rdf/:/staging:ro -v /scratch/virtuoso/:/virtuoso -d stain/virtuoso
+
+This uses the `:ro` parameter for /staging as Virtuoso would not be writing to its `/staging`.
 
 Note that `/scratch/ops/1.4/rdf/staging.sql` uses `/staging` as base directory, example:
 
@@ -65,7 +70,7 @@ Note that `/scratch/ops/1.4/rdf/staging.sql` uses `/staging` as base directory, 
 
 After staging is complete, a total number of triples (including any present before staging) will be output, and virtuoso will continue running.
 
-	stain@docker:~$ docker run -p 8890:8890 -v /scratch/ops/1.4/rdf/:/staging -v /scratch/virtuoso/:/virtuoso -it stain/virtuoso
+	stain@docker:~$ docker run -p 8890:8890 -v /scratch/ops/1.4/rdf/:/staging:ro -v /scratch/virtuoso/:/virtuoso -it stain/virtuoso
 	Virtuoso params: NumberOfBuffers 236980 ; MaxDirtyBuffers: 177735
 	Populating from /staging/staging.sql
 	Total number of triples:
