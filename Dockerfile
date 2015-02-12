@@ -1,26 +1,35 @@
 FROM ubuntu:14.04
+This repository is kept for historical reasons - see the tags and branches.
+This repository is kept for historical reasons - see the tags and branches.
 MAINTAINER Stian Soiland-Reyes <orcid.org/0000-0001-9842-9718>
+
+# openjdk 6 hard-coded to resolve 
+# ambiguity in build dependency
+# https://github.com/openlink/virtuoso-opensource/issues/342
+ENV BUILD_DEPS openjdk-6-jdk unzip wget net-tools build-essential
+ENV URL https://github.com/openlink/virtuoso-opensource/archive/stable/7.zip
 
 # Build virtuoso opensource debian package from github
 RUN echo "deb http://archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse" >> /etc/apt/sources.list
-RUN  apt-get update && \
-     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-       build-essential debhelper autotools-dev  \
-       autoconf automake unzip net-tools \
-       libtool flex bison gperf gawk m4 libssl-dev \
-       libreadline-dev openssl wget >/dev/null && \
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get install -y $BUILD_DEPS && \
     cd /tmp && \
-    wget --no-check-certificate --quiet \
-    https://github.com/openlink/virtuoso-opensource/archive/develop/7.zip \
+    wget --no-check-certificate --quiet $URL \
        -O /tmp/virtuoso-opensource.zip && \
     unzip -q /tmp/virtuoso-opensource.zip && \
-    cd /tmp/virtuoso-*/ && dpkg-buildpackage -us -uc && \
-    dpkg -i /tmp/virtuoso-*.deb && \
-    rm -rf /tmp/* &&\
-    DEBIAN_FRONTEND=noninteractive apt-get remove -y --purge build-essential debhelper autotools-dev \ 
-        flex bison autoconf automake wget unzip net-tools gcc && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
+    cd /tmp/virtuoso-*/ && \
+    deps=$(dpkg-checkbuilddeps 2>&1 | sed 's/.*: //' | sed 's/([^)]*)//g') && \
+    apt-get install -y $deps && \
+    dpkg-buildpackage -us -uc && \
+    apt-get remove -y --purge $BUILD_DEPS $deps && \
+    apt-get autoremove --purge -y 
+    dpkg -i virtuoso-opensource*deb virtuoso-server*.deb virtuoso-minimal_*.deb virtuoso-server*.deb  libvirtodbc*.deb || apt-get install -f -y && \
+    apt-get autoclean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
+RUN ln -s /usr/bin/isql-vt /usr/local/bin/isql
 
 # Enable mountable /virtuoso for data storage
 RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso/db,/virtuoso, /var/lib/virtuoso/db/virtuoso.ini 
