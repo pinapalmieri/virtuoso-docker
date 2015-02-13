@@ -1,6 +1,4 @@
 FROM ubuntu:14.04
-This repository is kept for historical reasons - see the tags and branches.
-This repository is kept for historical reasons - see the tags and branches.
 MAINTAINER Stian Soiland-Reyes <orcid.org/0000-0001-9842-9718>
 
 # openjdk 6 hard-coded to resolve 
@@ -23,7 +21,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -y $deps && \
     dpkg-buildpackage -us -uc && \
     apt-get remove -y --purge $BUILD_DEPS $deps && \
-    apt-get autoremove --purge -y 
+    apt-get autoremove --purge -y && \
     dpkg -i virtuoso-opensource*deb virtuoso-server*.deb virtuoso-minimal_*.deb virtuoso-server*.deb  libvirtodbc*.deb || apt-get install -f -y && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \
