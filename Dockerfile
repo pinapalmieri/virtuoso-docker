@@ -1,6 +1,4 @@
 FROM ubuntu:14.04
-This repository is kept for historical reasons - see the tags and branches.
-This repository is kept for historical reasons - see the tags and branches.
 MAINTAINER Stian Soiland-Reyes <orcid.org/0000-0001-9842-9718>
 
 # openjdk 6 hard-coded to resolve 
