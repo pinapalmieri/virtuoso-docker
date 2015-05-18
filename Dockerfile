@@ -4,7 +4,8 @@ MAINTAINER Stian Soiland-Reyes <orcid.org/0000-0001-9842-9718>
 # openjdk 6 hard-coded to resolve 
 # ambiguity in build dependency
 # https://github.com/openlink/virtuoso-opensource/issues/342
-ENV BUILD_DEPS openjdk-6-jdk unzip wget net-tools build-essential
+# FIXME: Is openjdk-6-jdk still needed?
+ENV BUILD_DEPS unzip wget net-tools build-essential
 ENV URL https://github.com/openlink/virtuoso-opensource/archive/stable/7.zip
 
 # Build virtuoso opensource debian package from github
@@ -30,10 +31,13 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 
 RUN ln -s /usr/bin/isql-vt /usr/local/bin/isql
 
+
 # Enable mountable /virtuoso for data storage
-#RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso/db,/virtuoso, /var/lib/virtuoso/db/virtuoso.ini 
+RUN mv /var/lib/virtuoso-opensource-7/db /virtuoso
+RUN ln -s /var/lib/virtuoso-opensource-7/db /virtuoso
+#RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso-opensource-7/db,/virtuoso, /etc/virtuoso-opensource-7/virtuoso.ini 
 # And /staging for loading data
-#RUN mkdir /staging ; sed -i '/DirsAllowed/ s:$:,/staging:' /var/lib/virtuoso/db/virtuoso.ini
+RUN mkdir /staging ; sed -i '/DirsAllowed/ s:$:,/staging:' /etc/virtuoso-opensource-7/virtuoso.ini
 
 COPY start-virtuoso.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/start-virtuoso.sh
@@ -41,9 +45,9 @@ RUN chmod 755 /usr/local/bin/start-virtuoso.sh
 # Virtuoso ports
 EXPOSE 8890
 EXPOSE 1111
+WORKDIR /virtuoso
 # Run virtuoso in the foreground
-WORKDIR /var/lib/virtuoso/db
-VOLUME ["/virtuoso", "/staging", "/var/lib/virtuoso/db"]
+VOLUME ["/virtuoso", "/staging", "/etc/virtuoso-opensource-7"]
 #CMD ["/usr/bin/virtuoso-t", "+wait", "+foreground"]
 CMD ["/usr/local/bin/start-virtuoso.sh"]
 

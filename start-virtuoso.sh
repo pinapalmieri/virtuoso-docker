@@ -2,7 +2,7 @@
 
 # Exit on first error
 set -e
-cd /var/lib/virtuoso/db
+cd /var/lib/virtuoso-opensource-7/db
 
 #set NumberOfBuffers and MaxDirtyBuffers parameters in Virtuoso.ini
 totalMem=$(cat /proc/meminfo | grep "MemTotal" | grep -o "[0-9]*")
@@ -13,8 +13,8 @@ dirtyBuffers=$(($nBuffers*3/4))
 
 echo "Virtuoso params: NumberOfBuffers $nBuffers ; MaxDirtyBuffers: $dirtyBuffers "
 
-sed -i "s/^\(NumberOfBuffers\s*= \)[0-9]*/\1$nBuffers/" /var/lib/virtuoso/db/virtuoso.ini
-sed -i "s/^\(MaxDirtyBuffers\s*= \)[0-9]*/\1$dirtyBuffers/" /var/lib/virtuoso/db/virtuoso.ini
+sed -i "s/^\(NumberOfBuffers\s*= \)[0-9]*/\1$nBuffers/" /etc/virtuoso-opensource-7/virtuoso.ini
+sed -i "s/^\(MaxDirtyBuffers\s*= \)[0-9]*/\1$dirtyBuffers/" /etc/virtuoso-opensource-7/virtuoso.ini
 
 
 
@@ -33,7 +33,7 @@ trap finish HUP INT QUIT KILL TERM
 
 if [ -f /staging/staging.sql ] ; then
   echo "Starting Virtuoso"
-  /usr/bin/virtuoso-t "+wait"
+  /usr/bin/virtuoso-t "+wait" "+configfile" /etc/virtuoso-opensource-7/virtuoso.ini
   echo "Configuring SPARQL"
   isql 'exec=GRANT EXECUTE ON DB.DBA.SPARQL_INSERT_DICT_CONTENT TO "SPARQL";'
   isql 'exec=GRANT EXECUTE ON DB.DBA.L_O_LOOK TO "SPARQL";'
@@ -57,6 +57,6 @@ if [ -f /staging/staging.sql ] ; then
   while [ -e /proc/$VIRT_PID ] ; do sleep 1.0 ; done
 else
   echo "Starting Virtuoso"
-  /usr/bin/virtuoso-t "+wait" "+foreground"
+  /usr/bin/virtuoso-t "+wait" "+foreground" "+configfile" /etc/virtuoso-opensource-7/virtuoso.ini
 fi 
 
