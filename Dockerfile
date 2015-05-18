@@ -5,7 +5,7 @@ MAINTAINER Stian Soiland-Reyes <orcid.org/0000-0001-9842-9718>
 # ambiguity in build dependency
 # https://github.com/openlink/virtuoso-opensource/issues/342
 # FIXME: Is openjdk-6-jdk still needed?
-ENV BUILD_DEPS unzip wget net-tools build-essential
+ENV BUILD_DEPS openjdk-6-jdk unzip wget net-tools build-essential
 ENV URL https://github.com/openlink/virtuoso-opensource/archive/stable/7.zip
 
 # Build virtuoso opensource debian package from github
