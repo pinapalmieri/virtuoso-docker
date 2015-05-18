@@ -1,9 +1,8 @@
 # Virtuoso
 
-Virtuoso 7 (devel) Open Source Edition on Ubuntu 14.04
+Virtuoso 7 (stable) Open Source Edition on Ubuntu 14.04
 
-Note that this is based on the current `develop/7` branch of Virtuoso, as 
-`v7.1.0` turned out to be unstable for data loading.
+Note that this is based on the current `stable/7` branch of Virtuoso. 
 
 ## Docker image
 
