@@ -33,9 +33,9 @@ RUN ln -s /usr/bin/isql-vt /usr/local/bin/isql
 
 
 # Enable mountable /virtuoso for data storage
-RUN rm -rf /var/lib/virtuoso-opensource-7/db 
 RUN mkdir /virtuoso
-RUN ln -s /var/lib/virtuoso-opensource-7/db /virtuoso
+RUN rm -rf /var/lib/virtuoso-opensource-7/db 
+RUN ln -s /virtuoso /var/lib/virtuoso-opensource-7/db
 #RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso-opensource-7/db,/virtuoso, /etc/virtuoso-opensource-7/virtuoso.ini 
 # And /staging for loading data
 RUN mkdir /staging ; sed -i '/DirsAllowed/ s:$:,/staging:' /etc/virtuoso-opensource-7/virtuoso.ini
