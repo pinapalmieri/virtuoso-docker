@@ -20,12 +20,12 @@ sed -i "s/^\(MaxDirtyBuffers\s*= \)[0-9]*/\1$dirtyBuffers/" /etc/virtuoso-openso
 
 
 function isql {
- isql-v 1111 dba dba VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout "$@"
+ /usr/local/bin/isql 1111 dba dba VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout "$@"
 }
 
 function finish {
   echo "Shutting down virtuoso"
-  isql-v 1111 dba dba -K
+  /usr/local/bin/isql 1111 dba dba -K
   sleep 2
 }
 trap finish HUP INT QUIT KILL TERM
