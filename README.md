@@ -76,20 +76,23 @@ If you need to replace an already created named container, remove the old contai
 
 ## Staging
 
-The volume `/staging` and the file `/staging/staging.sql` can be used to load data,
-typically using 
+The command `staging.sh` can be used with the volume `/staging` and the file
+`/staging/staging.sql` to load data, typically using 
 [ld\_dir](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtBulkRDFLoader)
 
+First, if you are populating to an existing data volume, ensure that the corresponding
+Virtuoso instance is **not running**:
 
-For example, to  populate the *data volume* `virtuoso-data` (see above) by
-running `staging.sql` from `/data/rdf` on the host:
+    docker stop virtuoso
+
+To populate the *data volume* `virtuoso-data` (see above) by running
+`staging.sql` from `/data/rdf` on the host:
 
     docker run -v /data/rdf:/staging:ro --volumes-from virtuoso-data -it stain/virtuoso staging.sh
 
 (This uses the `:ro` parameter as Virtuoso would not be writing to its `/staging`.)
 
 Note that the equivalent of `/data/rdf/staging.sql` must use `/staging` as base directory, example:
-
 
     -- Gene Ontology
     ld_dir('/staging/GO' , 'go_daily-termdb.owl.gz' , 'http://www.geneontology.org' );
@@ -99,9 +102,10 @@ Note that the equivalent of `/data/rdf/staging.sql` must use `/staging` as base 
     -- GOA
     ld_dir('/staging/GOA' , '*.rdf.gz' , 'http://www.openphacts.org/goa' );
 
-After staging is complete, a total number of triples (including any present before staging) will be output, and Virtuoso will shutdown.
+After staging is complete, a total number of triples (including any present
+before staging) will be output.
 
-Ensure that the Virtuoso instance associated with the volume is shutdown (or has not yet been created):
+For example:
 
     stain@docker:~$ docker stop virtuoso
     virtuoso
@@ -111,10 +115,7 @@ Ensure that the Virtuoso instance associated with the volume is shutdown (or has
     Total number of triples:
     5752
 
-.afterwhich you can (re)start Virtuoso:
-
     stain@docker:~$ docker restart virtuoso
-
 
 
 
