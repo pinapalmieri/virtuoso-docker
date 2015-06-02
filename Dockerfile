@@ -32,23 +32,26 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 RUN ln -s /usr/bin/isql-vt /usr/local/bin/isql
 
 
-# Enable mountable /virtuoso for data storage
+# Enable mountable /virtuoso for data storage, which
+# we'll symlink the standard db folder to point to
 RUN mkdir /virtuoso
 RUN rm -rf /var/lib/virtuoso-opensource-7/db 
 RUN ln -s /virtuoso /var/lib/virtuoso-opensource-7/db
-#RUN mkdir /virtuoso ; sed -i s,/var/lib/virtuoso-opensource-7/db,/virtuoso, /etc/virtuoso-opensource-7/virtuoso.ini 
-# And /staging for loading data
-RUN mkdir /staging ; sed -i '/DirsAllowed/ s:$:,/staging:' /etc/virtuoso-opensource-7/virtuoso.ini
+VOLUME /virtuoso
 
-COPY start-virtuoso.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/start-virtuoso.sh
+# /staging for loading data
+RUN mkdir /staging ; sed -i '/DirsAllowed/ s:$:,/staging:' /etc/virtuoso-opensource-7/virtuoso.ini
+VOLUME /staging
+
+COPY staging.sh update-virtuoso-ini.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/*.sh
 
 # Virtuoso ports
 EXPOSE 8890
 EXPOSE 1111
 WORKDIR /virtuoso
+# Modify config-file on start-up to reflect memory available
+ENTRYPOINT ["/usr/local/bin/update-virtuoso-ini.sh"]
 # Run virtuoso in the foreground
-VOLUME ["/virtuoso", "/staging", "/etc/virtuoso-opensource-7"]
-#CMD ["/usr/bin/virtuoso-t", "+wait", "+foreground"]
-CMD ["/usr/local/bin/start-virtuoso.sh"]
+CMD ["/usr/bin/virtuoso-t", "+wait", "+foreground", "+configfile", "/etc/virtuoso-opensource-7/virtuoso.ini"]
 
