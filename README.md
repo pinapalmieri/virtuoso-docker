@@ -118,4 +118,10 @@ For example:
     stain@docker:~$ docker restart virtuoso
 
 
+## Connecting with isql
+
+To run an interactive [isql](http://docs.openlinksw.com/virtuoso/isql.html) session
+to connect to the docker container `myvirtuoso`, try:
+
+    docker run --link myvirtuoso:virtuoso -it stain/virtuoso isql virtuoso
 
