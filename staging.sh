@@ -6,7 +6,7 @@ set -e
 service virtuoso-opensource-7 start
 
 function isql {
- /usr/local/bin/isql VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout "$@"
+ /usr/local/bin/isql localhost dba dba VERBOSE=OFF BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout "$@"
 }
 
 
