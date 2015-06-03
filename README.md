@@ -11,13 +11,15 @@ Note that this is based on the current `stable/7` branch of Virtuoso.
 
 ## License
 
-* Dockerfile: [Apache Software License 2.0](LICENSE.md) 
-* Docker image: [GNU GPL 2](https://github.com/openlink/virtuoso-opensource/blob/develop/7/LICENSE), like Virtuoso.
+* Dockerfile and scripts: [Apache Software License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+* Docker image: [GNU GPL 2](https://github.com/openlink/virtuoso-opensource/blob/stable/7/LICENSE), like Virtuoso.
 
 
 ## Credits
 
-[Virtuoso Open Source Edition](https://github.com/openlink/virtuoso-opensource) (C) 1998-2014 [OpenLink Software](http://www.openlinksw.com/) <vos.admin@openlinksw.com>
+[Virtuoso Open Source Edition](https://github.com/openlink/virtuoso-opensource)
+(C) 1998-2015 [OpenLink Software](http://www.openlinksw.com/)
+<vos.admin@openlinksw.com>
 
 Docker image maintained by [Stian Soiland-Reyes](http://orcid.org/0000-0001-9842-9718) on behalf of the 
 [Open PHACTS Foundation](http://www.openphactsfoundation.org/), based on
@@ -124,4 +126,15 @@ To run an interactive [isql](http://docs.openlinksw.com/virtuoso/isql.html) sess
 to connect to the docker container `myvirtuoso`, try:
 
     docker run --link myvirtuoso:virtuoso -it stain/virtuoso isql virtuoso
+
+## Contribute
+
+For this Docker image, feel free to
+[contribute](https://github.com/stain/virtuoso-docker), e.g.  
+[raise an issue](https://github.com/stain/virtuoso-docker/issues) or
+a [pull request](https://github.com/stain/virtuoso-docker/pulls).
+
+For all other questions on using and configuring Virtuoso, see the [Virtuoso
+support forums](http://boards.openlinksw.com/support/)
+and [virtuoso-opensource issues](https://github.com/openlink/virtuoso-opensource/issues).
 
