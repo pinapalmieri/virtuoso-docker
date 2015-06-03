@@ -43,15 +43,17 @@ VOLUME /virtuoso
 RUN mkdir /staging ; sed -i '/DirsAllowed/ s:$:,/staging:' /etc/virtuoso-opensource-7/virtuoso.ini
 VOLUME /staging
 
-COPY staging.sh update-virtuoso-ini.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/*.sh
+COPY staging.sh /usr/local/bin/
+COPY docker-entrypoint.sh /
+RUN chmod 755 /usr/local/bin/staging.sh /docker-entrypoint.sh
+
 
 # Virtuoso ports
 EXPOSE 8890
 EXPOSE 1111
 WORKDIR /virtuoso
 # Modify config-file on start-up to reflect memory available
-ENTRYPOINT ["/usr/local/bin/update-virtuoso-ini.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 # Run virtuoso in the foreground
 CMD ["/usr/bin/virtuoso-t", "+wait", "+foreground", "+configfile", "/etc/virtuoso-opensource-7/virtuoso.ini"]
 
