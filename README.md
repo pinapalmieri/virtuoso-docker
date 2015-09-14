@@ -54,10 +54,10 @@ Note that only a single container can access the `/virtuoso` volume at a time, o
 It is good practice to use [data volumes](http://docs.docker.com/userguide/dockervolumes/) to
 keep Virtuoso's data persistent across upgrades of the Virtuoso Docker image. 
 
-For example, to create a data container called `virtuoso-data` and link to it from
+For example, to create a data container called `virtuoso-data` for the volume `/virtuoso`, and link to it from
 a Virtuoso container called `virtuoso`:
 
-    docker run --name virtuoso-data busybox
+    docker run --name virtuoso-data -v /virtuoso busybox
     docker run --name virtuoso --volumes-from virtuoso-data -p 8890:8890 -d stain/virtuoso
 
 By using a named Docker container with `--name`, you can more easily stop and restart Virtuoso, e.g:
@@ -69,7 +69,7 @@ To make Virtuoso start on boot and restart on failure, create the container with
 
     docker run --name virtuoso --restart=always --volumes-from virtuoso-data -p 8890:8890 -d stain/virtuoso
 
-If you need to replace an already created named container, remove the old container(s) first:
+If you need to replace an already created named container, remove the old container(s) first, including `-v` to  also delete the volume content:
   
     docker rm -v virtuoso
     docker rm -v virtuoso-data # WARNING: Removes all data!
