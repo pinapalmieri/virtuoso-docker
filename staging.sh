@@ -36,7 +36,7 @@ loaders=$((loaders<MAX_LOADERS?loaders:MAX_LOADERS))
 
 echo "Starting $loaders rdf_loader_runs"
 
-for loader in {1..$loaders}; do
+for loader in `seq 1 8`; do
   echo Starting RDF loader $loader 
   isql 'EXEC=rdf_loader_run();' & 
 done
