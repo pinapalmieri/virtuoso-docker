@@ -32,6 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     dpkg -i virtuoso-opensource*deb virtuoso-server*.deb virtuoso-minimal_*.deb virtuoso-server*.deb  libvirtodbc*.deb || apt-get install -f -y && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \
+    mv /tmp/*deb /var/cache/apt/archives/ && \
     rm -rf /tmp/*
 
 RUN ln -s /usr/bin/isql-vt /usr/local/bin/isql
@@ -40,7 +41,9 @@ RUN ln -s /usr/bin/isql-vt /usr/local/bin/isql
 # Enable mountable /virtuoso for data storage, which
 # we'll symlink the standard db folder to point to
 RUN mkdir /virtuoso
-RUN rm -rf /var/lib/virtuoso-opensource-7/db 
+#RUN rm -rf /var/lib/virtuoso-opensource-7/db 
+RUN tar tf /var/lib/virtuoso-opensource-7/db.tar /var/lib/virtuoso-opensource-7/db
+RUN mv /var/lib/virtuoso-opensource-7/db /virtuoso
 RUN ln -s /virtuoso /var/lib/virtuoso-opensource-7/db
 VOLUME /virtuoso
 
