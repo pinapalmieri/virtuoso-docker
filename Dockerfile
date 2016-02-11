@@ -41,9 +41,7 @@ RUN ln -s /usr/bin/isql-vt /usr/local/bin/isql
 # Enable mountable /virtuoso for data storage, which
 # we'll symlink the standard db folder to point to
 RUN mkdir /virtuoso
-#RUN rm -rf /var/lib/virtuoso-opensource-7/db 
-RUN tar tf /var/lib/virtuoso-opensource-7/db.tar /var/lib/virtuoso-opensource-7/db
-RUN mv /var/lib/virtuoso-opensource-7/db /virtuoso
+RUN rm -rf /var/lib/virtuoso-opensource-7/db 
 RUN ln -s /virtuoso /var/lib/virtuoso-opensource-7/db
 VOLUME /virtuoso
 
